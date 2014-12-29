@@ -41,7 +41,6 @@ module.exports = ( grunt ) ->
                     { expand: true, cwd: "lib", src: "jquery.<%= pkg.name %>*", dest: "dist/examples/infinite" }
                     { expand: true, cwd: "lib", src: "jquery.<%= pkg.name %>*", dest: "dist/examples/simple" }
                     { expand: true, cwd: "lib", src: "jquery.<%= pkg.name %>*", dest: "dist/examples/responsive" }
-                    { expand: true, cwd: "lib", src: "<%= pkg.name %>*",        dest: "dist/examples/nojquery" }
                 ]
 
         #  Validate javascript files with jsHint.
@@ -54,7 +53,6 @@ module.exports = ( grunt ) ->
 
             all : [
                 "lib/jquery.<%= pkg.name %>.js"
-                "lib/<%= pkg.name %>.js"
             ]
 
         #  Minify the javascript.
@@ -71,7 +69,6 @@ module.exports = ( grunt ) ->
                 files :
 
                     "lib/jquery.<%= pkg.name %>.min.js" : ["lib/jquery.<%= pkg.name %>.js"]
-                    "lib/<%= pkg.name %>.min.js"        : ["lib/<%= pkg.name %>.js"]
 
         #  Replace image file paths in css and correct css path in the index.
         #
@@ -130,32 +127,7 @@ module.exports = ( grunt ) ->
                 src    : ["**/*"]
                 dest   : "."
 
-        #  Deploy plugin to baijs.com
-        #
-        "ftp-deploy" :
 
-            docs :
-
-                auth :
-
-                    host    : "ftp.baijs.nl"
-                    port    : 21
-                    authKey : "<%= pkg.name %>"
-
-                src  : "dist/docs"
-                dest : "/"
-
-            examples :
-
-                auth :
-
-                    host    : "ftp.baijs.nl"
-                    port    : 21
-                    authKey : "<%= pkg.name %>"
-
-                src  : "dist/"
-                dest : "/"
-                exclusions: ["docs", "<%= pkg.name %>-<%= pkg.version %>-docs.zip"]
 
     #  Load all the task modules we need.
     #
@@ -180,16 +152,5 @@ module.exports = ( grunt ) ->
             "replace:dist"
             "compress:docs"
             "compress:examples"
-        ]
-    )
-
-    #  Upload dist to baijs.nl
-    #
-    grunt.registerTask(
-        "ftp"
-        [
-            "default"
-            "ftp-deploy:docs"
-            "ftp-deploy:examples"
         ]
     )
